@@ -57,7 +57,7 @@ Item {
 
             return activeVehicle.batteries
                     .get(_gasolineIndex)
-                    .percentRemaining.value
+                    .percentRemaining.rawValue
         }
     }
 

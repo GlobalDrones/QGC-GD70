@@ -99,7 +99,7 @@ Item {
         value: {
             if (!activeVehicle) return 0
             if (activeVehicle.batteries.count <= 0) return 0
-            return activeVehicle.batteries.get(_gasolineIndex).percentRemaining.value
+            return activeVehicle.batteries.get(_gasolineIndex).percentRemaining.rawValue
         }
     }
 
@@ -246,7 +246,7 @@ Item {
     // GASOLINA
     //**************************************************************************************************
 
-   /* Loader {
+    Loader {
         id: gasolineIconLoader
         anchors.top: parent.top
         anchors.left: parent.left
@@ -294,10 +294,10 @@ Item {
         anchors.fill: textBoxGasolinePercentage
         horizontalAlignment: Text.AlignHCenter
         verticalAlignment: Text.AlignVCenter
-        text: _gasolina + "%"
+        text: _gasolina.toString() + "%"
         font.bold: true
         color: "white"
-    }*/
+    }
 
 
     //**************************************************************************************************
@@ -307,7 +307,7 @@ Item {
     QGCColoredImage {
         id: motorTemperatureInformationIcon
         anchors.top: parent.top
-        anchors.left: parent.leftz
+        anchors.left: textBoxGasolinePercentage.right
         anchors.leftMargin: toolsMargin*2
         anchors.topMargin: toolsMargin * 2
 
