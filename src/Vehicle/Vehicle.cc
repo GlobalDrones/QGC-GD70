@@ -1737,7 +1737,8 @@ void Vehicle::_mavlinkMessageReceived(LinkInterface* link, mavlink_message_t mes
             TEMP3,
             TEMPGD25,
             RC_SCORE,
-            NET_SCORE
+            NET_SCORE,
+            T_MOTOR
         };
 
         mavlink_named_value_float_t msg_nvf;
@@ -1749,6 +1750,7 @@ void Vehicle::_mavlinkMessageReceived(LinkInterface* link, mavlink_message_t mes
         else if (strncmp(msg_nvf.name, "TempICE", 10) == 0) id = TEMPGD25;
         else if (strncmp(msg_nvf.name, "RC_SCORE", 10) == 0) id = RC_SCORE;
         else if (strncmp(msg_nvf.name, "NET_SCORE", 10) == 0) id = NET_SCORE;
+        else if (strncmp(msg_nvf.name, "T_Motor", 10) == 0) id = T_MOTOR;
 
         /*char nameBuffer[11] = {};
         memcpy(nameBuffer, msg_nvf.name, 10);
@@ -1760,21 +1762,6 @@ void Vehicle::_mavlinkMessageReceived(LinkInterface* link, mavlink_message_t mes
         }*/
 
         switch(id) {
-        case TEMP1:
-           // qWarning() << "MEU SWITCH FUNCIONA PARA TEMP1:" << msg_nvf.value;
-            _gd60_Sensor1Fact.setRawValue(msg_nvf.value);
-            break;
-        case TEMP2:
-            //qWarning() << "MEU SWITCH FUNCIONA PARA TEMP2:" << msg_nvf.value;
-
-            break;
-        case TEMP3:
-            //qWarning() << "MEU SWITCH FUNCIONA PARA TEMP3:" << msg_nvf.value;
-
-            break;
-        case TEMPGD25:
-            _gd60_Sensor1Fact.setRawValue(msg_nvf.value);
-            break;
         case RC_SCORE:
             _GD_RC_SCOREFact.setRawValue(msg_nvf.value);
             _gd60_Sensor2Fact.setRawValue(msg_nvf.value);
@@ -1783,6 +1770,8 @@ void Vehicle::_mavlinkMessageReceived(LinkInterface* link, mavlink_message_t mes
             _GD_NET_SCOREFact.setRawValue(msg_nvf.value);
             _gd60_Sensor3Fact.setRawValue(msg_nvf.value);
             break;
+        case T_MOTOR:
+            _gd60_Sensor1Fact.setRawValue(msg_nvf.value);
         default:
             //qWarning() << "NAMED_VALUE_FLOAT RECEBIDO: "<<msg_nvf.value;
             break;

@@ -27,6 +27,7 @@ Item {
     visible: true
 
     property bool showIndicator: true
+    property real max_consumed: 5000
 
     property var _activeVehicle: QGroundControl.multiVehicleManager.activeVehicle
 
@@ -103,6 +104,15 @@ Item {
                 return ""
             }
 
+                function getBatteryFuelLeftInLiters() {
+                    if (isNaN(battery.mahConsumed.rawValue)) {
+                        return qsTr("NaN")
+                    }
+                    else{
+                        return ((max_consumed - battery.mahConsumed.rawValue)/1000).toFixed(2)
+                    }
+                }
+
             QGCColoredImage {
                 anchors.top:        parent.top
                 anchors.bottom:     parent.bottom
@@ -144,7 +154,15 @@ Item {
             }
 
             QGCLabel {
-                text:                   getBatteryTensionText()
+                text:
+                {
+                    switch (battery.id.rawValue) {
+                     case 2:
+                         return getBatteryFuelLeftInLiters().toString() + "L"
+                     default:
+                         return getBatteryTensionText()
+                     }
+                }
                 font.pointSize:         ScreenTools.mediumFontPointSize
                 color:                  getBatteryColor()
                 anchors.verticalCenter: parent.verticalCenter
