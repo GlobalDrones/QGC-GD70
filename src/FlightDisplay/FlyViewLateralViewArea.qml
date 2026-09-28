@@ -214,16 +214,15 @@ Item {
 
                 Text {
                     Layout.alignment: Qt.AlignHCenter
-                    text: "Alt. AMSL"
+                    text: "Alt. Rel"
                     color: "white"
                     font.pointSize: 14
                     font.bold: true
                 }
-
                 Text {
                     Layout.alignment: Qt.AlignHCenter
                     text: activeVehicle ?
-                          safe(activeVehicle.altitudeAMSL.value, 1) + " m"
+                          safe(activeVehicle.altitudeRelative.value, 1) + " m"
                           : "--"
                     color: "white"
                     font.pointSize: 14

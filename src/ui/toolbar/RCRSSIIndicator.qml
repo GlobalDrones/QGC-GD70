@@ -92,7 +92,7 @@ Item {
             text: _activeVehicle ? (_activeVehicle.rcRSSI + "%") : 0
         }
 
-        QGCColoredImage {
+        /*QGCColoredImage {
             width:              height
             anchors.top:        parent.top
             anchors.bottom:     parent.bottom
@@ -124,7 +124,7 @@ Item {
             font.bold:true
             anchors.verticalCenter: parent.verticalCenter
             text: _activeVehicle ? (_activeVehicle.gd60_Sensor2.rawValue.toFixed(0) + "%") : "NaN"
-        }
+        }*/
 
 
 

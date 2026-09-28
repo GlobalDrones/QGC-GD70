@@ -111,11 +111,11 @@ Item {
                 source: {
                         switch (battery.id.rawValue) {
                         case 2:
-                            return "/qmlimages/Battery.svg"
+                            return "/qmlimages/GasCan.svg"
                         case 1:
                             return "/qmlimages/Battery.svg"
                         default:
-                            return "/qmlimages/Battery.svg"
+                            return "/qmlimages/Generator.svg"
                         }
                     }
                 fillMode:           Image.PreserveAspectFit

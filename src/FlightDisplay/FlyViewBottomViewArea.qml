@@ -45,10 +45,9 @@ Item {
     property real   toolsMargin
     property bool _androidBuild
 
-    property int _battery1Index: 0
-    property int _battery2Index: 0
-    property int _gasolineIndex: 1
-    property int _generatorIndex: 2
+    property int _batteryIndex: 1
+    property int _gasolineIndex: 2
+    property int _generatorIndex: 0
 
     property bool _selected_rotor_1
     property bool _selected_rotor_2
@@ -125,6 +124,32 @@ Item {
         }
     }
 
+    property string generatorVoltageText: ""
+    Binding {
+        target: bottomDataArea
+        property: "generatorVoltageText"
+        value: {
+            if (!activeVehicle) return "Generator Voltage: "
+            if (activeVehicle.batteries.count <= 0) return "Generator Voltage: "
+
+            return "Generator Voltage: " +
+                   activeVehicle.batteries.get(_generatorIndex).voltage.rawValue.toFixed(1) + "V"
+        }
+    }
+
+    property string generatorCurrentText: ""
+    Binding {
+        target: bottomDataArea
+        property: "generatorCurrentText"
+        value: {
+            if (!activeVehicle) return "Generator Current:"
+            if (activeVehicle.batteries.count <= 0) return "Generator Current:"
+
+            return "Generator Current: " +
+                   activeVehicle.batteries.get(_generatorIndex).current.rawValue.toFixed(1) + "A"
+        }
+    }
+
     property string batteryVoltageText: ""
     Binding {
         target: bottomDataArea
@@ -134,7 +159,7 @@ Item {
             if (activeVehicle.batteries.count <= 0) return "Battery Voltage: "
 
             return "Battery Voltage: " +
-                   activeVehicle.batteries.get(0).voltage.rawValue.toFixed(1) + "V"
+                   activeVehicle.batteries.get(_batteryIndex).voltage.rawValue.toFixed(1) + "V"
         }
     }
 
@@ -147,27 +172,17 @@ Item {
             if (activeVehicle.batteries.count <= 0) return "Battery Current:"
 
             return "Battery Current: " +
-                   activeVehicle.batteries.get(0).current.rawValue.toFixed(1) + "A"
+                   activeVehicle.batteries.get(_batteryIndex).current.rawValue.toFixed(1) + "A"
         }
     }
-/* //versão de original, comentada temporariamente
-    property string generatorCurrentText: ""
+
+
+
+
+    property string flightDistanceText: ""
     Binding {
         target: bottomDataArea
-        property: "generatorCurrentText"
-        value: {
-            if (!activeVehicle) return "Generator Current:"
-            if (activeVehicle.batteries.count <= 0) return "Generator Current:"
-
-            return "Generator Current: " +
-                   activeVehicle.batteries.get(2).current.rawValue.toFixed(1) + "A"
-        }
-    }*/
-
-    property string generatorCurrentText: ""
-    Binding {
-        target: bottomDataArea
-        property: "generatorCurrentText"
+        property: "flightDistanceText"
         value: {
             if (!activeVehicle) return "FlightDist:"
 
@@ -224,6 +239,7 @@ Item {
                    (seconds < 10 ? "0" + seconds : seconds)
         }
     }
+
 
 
     //**************************************************************************************************
@@ -520,8 +536,8 @@ Item {
                                         Text {
                                             id: text1
                                             anchors.centerIn: parent
-                                            // Assuming data is 1234, and you want 5 total digits (one leading zero)
-                                            text: batteryVoltageText
+
+                                            text: generatorVoltageText
                                             font.bold: true
                                             font.pointSize: _dataBox._fontSize
                                             //color: "white"
@@ -546,7 +562,7 @@ Item {
 
                                         Text {
                                             anchors.centerIn: parent
-                                            text: generatorCurrentText
+                                            text: batteryVoltageText
                                             font.bold: true
                                             font.pointSize: _dataBox._fontSize
                                             color: "white"
@@ -561,7 +577,7 @@ Item {
                                         border.color:"white"
                                         Text {
                                             anchors.centerIn: parent
-                                            text: flightTimeText
+                                            text: flightDistanceText
                                             //text: "Flightime: " + _flightTime
                                             font.bold: true
                                             font.pointSize: _dataBox._fontSize
@@ -575,6 +591,20 @@ Item {
                                     height: parent.height / 2
 
                                     // Second row of rectangles
+                                    Rectangle {
+                                        width: parent.width/3
+                                        height: parent.height
+                                        color: "transparent"
+                                        border.width: _borderWidth
+                                        border.color:"white"
+                                        Text {
+                                            anchors.centerIn: parent
+                                            text: generatorCurrentText
+                                            font.bold: true
+                                            font.pointSize: _dataBox._fontSize
+                                            color: "white"
+                                        }
+                                    }
                                     Rectangle {
                                         width: parent.width/3
                                         height: parent.height
@@ -601,20 +631,6 @@ Item {
                                             font.bold: true
                                             font.pointSize: _dataBox._fontSize
                                             color: "white"
-                                        }
-                                    }
-                                    Rectangle {
-                                        width: parent.width/3
-                                        height: parent.height
-                                        color: "transparent"
-                                        border.width: _borderWidth
-                                        border.color:"white"
-                                        Text {
-                                            anchors.centerIn: parent
-                                            text: altLIDARText
-                                            font.bold: true
-                                            font.pointSize: _dataBox._fontSize
-                                            color: activeVehicle? (activeVehicle.rangeFinderDist.value.toFixed(1) > 120 ? "red":"white"):"white"
                                         }
                                     }
                                 }
