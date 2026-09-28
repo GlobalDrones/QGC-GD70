@@ -161,7 +161,7 @@ private:
 
     static const int    _maxInitialRequestListRetry = 4;        ///< Maximum retries for request list
     int                 _initialRequestRetryCount;              ///< Current retry count for request list
-    static const int    _maxInitialLoadRetrySingleParam = 5;    ///< Maximum retries for initial index based load of a single param
+    static const int    _maxInitialLoadRetrySingleParam = 1;    ///< Maximum retries for initial index based load of a single param
     static const int    _maxReadWriteRetry = 5;                 ///< Maximum retries read/write
     bool                _disableAllRetries;                     ///< true: Don't retry any requests (used for testing)
 
