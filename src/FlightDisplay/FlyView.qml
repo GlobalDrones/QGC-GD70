@@ -858,6 +858,7 @@ Item {
                     anchors.horizontalCenter: parent.horizontalCenter
                     anchors.bottom: parent.bottomz
                     z: _fullItemZorder + 10
+                    visible: false
 
                     // texto centralizado
                     Text {
