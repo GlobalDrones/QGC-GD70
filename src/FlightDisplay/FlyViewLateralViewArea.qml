@@ -36,28 +36,33 @@ Item {
 
     property var activeVehicle
 
-    property int _gasolineIndex: 1
+    property int _gasolineBatteryId: 2      // Sensor de nivel de combustivel = Batt[2]
+    property real _maxConsumed: 5000        // Capacidade do tanque (5000 = 5L), igual ao BatteryIndicator
+    property real _secondsPerLiter: 600     // 1L a cada 10min
 
-    property real gasolinaPercent: 0
+    property real gasolinaLiters: NaN
     property string estimatedTimeText: "--:--:--"
 
     property real sectionHeight: height / 6
 
 
     //=====================================================================
-    // GASOLINA %
+    // GASOLINA (L) - media movel do sensor de nivel, sem leituras 255
     //=====================================================================
 
     Binding {
         target: root
-        property: "gasolinaPercent"
+        property: "gasolinaLiters"
         value: {
-            if (!activeVehicle) return 0
-            if (activeVehicle.batteries.count <= _gasolineIndex) return 0
+            if (!activeVehicle) return NaN
 
-            return activeVehicle.batteries
-                    .get(_gasolineIndex)
-                    .percentRemaining.rawValue
+            for (var i = 0; i < activeVehicle.batteries.count; i++) {
+                var battery = activeVehicle.batteries.get(i)
+                if (battery.id.rawValue === _gasolineBatteryId) {
+                    return Math.max(0, (_maxConsumed - battery.mahConsumedAvg.rawValue) / 1000)
+                }
+            }
+            return NaN
         }
     }
 
@@ -72,7 +77,7 @@ Item {
         value: {
             if (!activeVehicle) return "--:--:--"
 
-            var totalSeconds = 7200 * (gasolinaPercent / 100)
+            var totalSeconds = gasolinaLiters * _secondsPerLiter
 
             if (!totalSeconds || isNaN(totalSeconds))
                 return "--:--:--"

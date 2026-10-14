@@ -105,11 +105,12 @@ Item {
             }
 
                 function getBatteryFuelLeftInLiters() {
-                    if (isNaN(battery.mahConsumed.rawValue)) {
+                    // Media movel das ultimas 20 leituras validas (leituras 255 sao ignoradas)
+                    if (isNaN(battery.mahConsumedAvg.rawValue)) {
                         return qsTr("NaN")
                     }
                     else{
-                        return ((max_consumed - battery.mahConsumed.rawValue)/1000).toFixed(2)
+                        return ((max_consumed - battery.mahConsumedAvg.rawValue)/1000).toFixed(2)
                     }
                 }
 
